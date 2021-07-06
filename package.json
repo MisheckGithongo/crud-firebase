@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "test": "firebase emulators:exec --project crud-firebase-1166f jest"
+  },
+  "dependencies": {
+    "jest": "^27.0.6",
+    "supertest": "^6.1.3"
+  }
+}
