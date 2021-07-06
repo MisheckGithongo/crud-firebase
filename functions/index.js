@@ -4,13 +4,14 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
-// Take the text parameter passed to this HTTP endpoint and insert it into
-// Firestore under the path /messages/:documentId/original
-exports.addMessage = functions.https.onRequest(async (req, res) => {
-  // Grab the text parameter.
-  const original = req.query.text;
-  // Push the new message into Firestore using the Firebase Admin SDK.
-  const writeResult = await admin.firestore().collection("messages").add({original: original});
-  // Send back a message that we've successfully written the message
-  res.json({result: `Message with ID: ${writeResult.id} added.`});
+exports.addRecord = functions.https.onRequest(async (req, res) => {
+  const { itemName, itemDesc, itemPrice, itemQty, inStock, category } = req.body
+  if(!itemName || !itemDesc || !itemPrice || !itemQty || !inStock || !category){
+    return res.status(400).send("Missing required fields")
+  }
+  const timestamp = new Date().toISOString();
+  const record = {itemName, itemDesc, itemPrice, itemQty, inStock, category, updatedOn: timestamp };
+  const writeResult = await admin.firestore().collection("inventory").add(record);
+  record.id = writeResult.id;
+  res.status(201).json({ status: "success", data: record });
 });
