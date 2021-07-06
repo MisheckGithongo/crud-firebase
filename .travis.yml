@@ -1,0 +1,15 @@
+language: node_js
+node_js: 
+  - "14"
+env:
+  - NODE_ENV=test
+branches:
+  only:
+  - master
+  - develop
+before_install:
+  - curl -sL https://firebase.tools | bash
+cache:
+  directories:
+    - "node_modules"
+script: npm test
