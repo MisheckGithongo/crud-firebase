@@ -13,13 +13,13 @@ exports.addRecord = functions.https.onRequest(async (req, res) => {
   const record = {itemName, itemDesc, itemPrice, itemQty, inStock, category, updatedOn: timestamp };
   const writeResult = await admin.firestore().collection("inventory").add(record);
   record.id = writeResult.id;
-  res.status(201).json({ status: "success", data: record });
+  res.status(201).json({ status: "success", message: "record added", data: record });
 });
 
 exports.inventory = functions.https.onRequest(async (req, res) => {
   const snapshot = await admin.firestore().collection("inventory").get();
   const inventoryList = snapshot.docs.map(doc => doc.data());
-  res.status(200).json({ status: "success", data: inventoryList });
+  res.status(200).json({ status: "success", message: "inventory list", data: inventoryList });
 })
 
 exports.updateRecord = functions.https.onRequest(async (req, res) => {
@@ -31,5 +31,14 @@ exports.updateRecord = functions.https.onRequest(async (req, res) => {
   const record = {itemName, itemDesc, itemPrice, itemQty, inStock, category, updatedOn: timestamp };
   await admin.firestore().collection("inventory").doc(id).update(record);
   record.id = id
-  res.status(200).json({ status: "success", data: record });
+  res.status(200).json({ status: "success", message: "record updated", data: record });
+})
+
+exports.deleteRecord = functions.https.onRequest(async (req, res) => {
+  const { id } = req.body
+  if(!id){
+    return res.status(400).send("Missing required fields")
+  }
+  await admin.firestore().collection("inventory").doc(id).delete();
+  res.status(200).json({ status: "success", message: "record deleted" });
 })
