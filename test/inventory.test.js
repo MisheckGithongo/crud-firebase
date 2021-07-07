@@ -1,6 +1,4 @@
 const request = require('supertest')
-require('coveralls')
-
 
 describe('POST /addRecord', () => {
     it('should add a new record to the inventory', async () => {
