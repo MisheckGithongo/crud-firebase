@@ -15,3 +15,9 @@ exports.addRecord = functions.https.onRequest(async (req, res) => {
   record.id = writeResult.id;
   res.status(201).json({ status: "success", data: record });
 });
+
+exports.inventory = functions.https.onRequest(async (req, res) => {
+  const snapshot = await admin.firestore().collection("inventory").get();
+  const inventoryList = snapshot.docs.map(doc => doc.data());
+  res.status(200).json({ status: "success", data: inventoryList });
+})
