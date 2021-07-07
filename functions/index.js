@@ -21,3 +21,15 @@ exports.inventory = functions.https.onRequest(async (req, res) => {
   const inventoryList = snapshot.docs.map(doc => doc.data());
   res.status(200).json({ status: "success", data: inventoryList });
 })
+
+exports.updateRecord = functions.https.onRequest(async (req, res) => {
+  const { id, itemName, itemDesc, itemPrice, itemQty, inStock, category } = req.body
+  if(!id || !itemName || !itemDesc || !itemPrice || !itemQty || !inStock || !category){
+    return res.status(400).send("Missing required fields")
+  }
+  const timestamp = new Date().toISOString();
+  const record = {itemName, itemDesc, itemPrice, itemQty, inStock, category, updatedOn: timestamp };
+  await admin.firestore().collection("inventory").doc(id).update(record);
+  record.id = id
+  res.status(200).json({ status: "success", data: record });
+})
