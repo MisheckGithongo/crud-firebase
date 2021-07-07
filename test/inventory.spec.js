@@ -15,13 +15,13 @@ describe('POST /addRecord', () => {
     }).timeout(6000)
   })
 
-  // describe('GET /inventory', () => {
-  //   it('should return all records in the inventory', async () => {
-  //     const res = await request('localhost:5001').get('/crud-firebase-1166f/us-central1/inventory')
-  //       .type('application/json')
-  //       .expect(200)
-  //   }).timeout(6000)
-  // })
+  describe('GET /inventory', () => {
+    it('should return all records in the inventory', async () => {
+      const res = await request('localhost:5001').get('/crud-firebase-1166f/us-central1/inventory')
+        .type('application/json')
+        .expect(200)
+    }).timeout(6000)
+  })
 
   // describe('PUT /updateRecord', () => {
   //   it('should update the record with the id in the inventory', async () => {
