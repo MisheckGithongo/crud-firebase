@@ -5,7 +5,7 @@ env:
   - NODE_ENV=test
 branches:
   only:
-  - master
+  - main
   - develop
 before_install:
   - curl -sL https://firebase.tools | bash
